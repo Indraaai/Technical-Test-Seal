@@ -20,4 +20,25 @@ class UserRepository
     {
         return User::find($id);
     }
+
+    public function findByProvider(string $provider, string $providerId): ?User
+    {
+        return User::where('provider', $provider)
+            ->where('provider_id', $providerId)
+            ->first();
+    }
+
+    public function updateOrCreateByProvider(
+        string $provider,
+        string $providerId,
+        array $data
+    ): User {
+        return User::updateOrCreate(
+            [
+                'provider' => $provider,
+                'provider_id' => $providerId,
+            ],
+            $data
+        );
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class AuthService
@@ -37,6 +38,27 @@ class AuthService
                 'email' => ['Email atau password salah.'],
             ]);
         }
+
+        return [
+            'user' => $user,
+            'token' => $this->createToken($user),
+        ];
+    }
+
+    public function loginWithOAuth(string $provider, object $oauthUser): array
+    {
+        $user = $this->userRepository->updateOrCreateByProvider(
+            provider: $provider,
+            providerId: $oauthUser->getId(),
+            data: [
+                'name' => $oauthUser->getName()
+                    ?? $oauthUser->getNickname()
+                    ?? 'OAuth User',
+                'email' => $oauthUser->getEmail(),
+                'password' => Str::random(32),
+                'role' => 'employee',
+            ]
+        );
 
         return [
             'user' => $user,
