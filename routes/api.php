@@ -27,8 +27,8 @@ Route::prefix('v1')->group(function () {
         Route::middleware('role:admin')->group(function () {
             Route::get('/admin/leave-requests', [AdminLeaveRequestController::class, 'index']);
             Route::get('/admin/leave-requests/{id}', [AdminLeaveRequestController::class, 'show']);
-            Route::post('/admin/leave-requests/{id}/approve', [AdminLeaveRequestController::class, 'approve']);
-            Route::post('/admin/leave-requests/{id}/reject', [AdminLeaveRequestController::class, 'reject']);
+            Route::patch('/admin/leave-requests/{id}/approve', [AdminLeaveRequestController::class, 'approve']);
+            Route::patch('/admin/leave-requests/{id}/reject', [AdminLeaveRequestController::class, 'reject']);
         });
     });
 });
